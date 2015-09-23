@@ -137,11 +137,17 @@
     var Storage = {};
 
     Storage.save = function save() {
-        localStorage.setItem('todos', ko.toJSON(viewModel.todos));
+        axios.post('/api/save', ko.toJS(this)).then(function(response){
+            viewModel.todos(response.data.map(Storage.mapTodo));
+        })
     };
 
     Storage.remove = function remove(id) {
-        localStorage.setItem('todos', ko.toJSON(viewModel.todos));
+        if (id) {
+            axios.delete('/api/delete/' + id).then(function(response){
+                viewModel.todos(response.data.map(Storage.mapTodo));
+            })
+        }
     };
 
     Storage.loadAll = function loadAll() {
