@@ -145,8 +145,9 @@
     };
 
     Storage.loadAll = function loadAll() {
-        var todos = JSON.parse(localStorage.getItem('todos'));
-        viewModel.todos(todos.map(Storage.mapTodo));
+        axios.get('/api/all').then(function(response){
+            viewModel.todos(response.data.map(Storage.mapTodo));
+        });
     };
 
     Storage.mapTodo = function mapTodo(todo) {
